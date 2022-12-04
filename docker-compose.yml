@@ -5,12 +5,15 @@ volumes:
     driver: local
 
 services:
+  # Service for demo API (uses Dockerfile)
   demo-api:
     build: .
     ports:
       - "3000:80"
     volumes:
-      - .:/var/www/html/
+      - .:/var/www/html/ # binds project root to the image
+
+  # Service for MariaDB
   demo-database:
     image: mariadb:10.3.37
     environment:
@@ -18,8 +21,12 @@ services:
       MYSQL_USER: usr_php_rest_scaffolding
       MYSQL_PASSWORD: pass_php_rest_scaffolding
       MYSQL_DATABASE: php_rest_scaffolding_db
+
+  # Service used for administrating the demo database
   demo-dbadmin:
     image: adminer
     restart: always
     ports:
       - "8080:8080"
+    depends_on:
+      - "demo-database"
