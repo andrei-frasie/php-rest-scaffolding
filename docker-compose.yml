@@ -1,0 +1,25 @@
+version: "3.7"
+
+volumes:
+  logs:
+    driver: local
+
+services:
+  demo-api:
+    build: .
+    ports:
+      - "3000:80"
+    volumes:
+      - .:/var/www/html/
+  demo-database:
+    image: mariadb:10.3.37
+    environment:
+      MYSQL_ROOT_PASSWORD: root_pass_php_rest_scaffolding
+      MYSQL_USER: usr_php_rest_scaffolding
+      MYSQL_PASSWORD: pass_php_rest_scaffolding
+      MYSQL_DATABASE: php_rest_scaffolding_db
+  demo-dbadmin:
+    image: adminer
+    restart: always
+    ports:
+      - "8080:8080"
